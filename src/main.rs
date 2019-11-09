@@ -1,11 +1,16 @@
 use std::net::TcpListener;
 
-fn main() {
-    let listener = TcpListener::bind("127.0.0.1:5000").unwrap();
+fn instance_listen(port: &str) {
+    let listener = TcpListener::bind(format!("localhost{}", port)).unwrap();
 
     for stream in listener.incoming() {
         let stream = stream.unwrap();
 
         println!("TCP Connection");
     }
+}
+
+fn main() {
+    let port = ":5000";
+    instance_listen(port);
 }
