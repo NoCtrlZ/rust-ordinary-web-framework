@@ -1,3 +1,7 @@
+// extern crate regex;
+
+// use regex::Regex;
+
 struct Request {
     header: Box<Header>,
     body: Box<Body>,
@@ -23,6 +27,7 @@ pub fn parse_request(buffer: &[u8]) {
 
 fn parse_header(header: &str) {
     let components: Vec<&str> = header.split("\r\n").collect();
+    println!("{:?}", components);
     if valid_request(components[0]) {
         let request: Vec<&str> = components[0].split(" ").collect();
         println!("{:?}", request);
@@ -31,14 +36,11 @@ fn parse_header(header: &str) {
 
 fn valid_request(request: &str) -> bool {
     let v: Vec<&str> = request.split(" ").collect();
-    valid_method(v[0]);
-    // valid_path(v[1]);
-    // valid_version(v[2]);
-    if v[2] == "HTTP/1.1" {
-        true
-    } else {
-        false
+    if valid_method(v[0]) && valid_path(v[1]) && valid_version(v[2]) {
+        return true
     }
+
+    false
 }
 
 fn valid_method(method: &str) -> bool {
@@ -46,4 +48,22 @@ fn valid_method(method: &str) -> bool {
         "GET" | "POST" | "PUT" | "DELETE" | "TRACE" | "CONNECT" |"HEAD" | "OPTIONS" => return true,
         _ => return false,
     };
+}
+
+fn valid_path(path: &str) -> bool {
+    println!("{}", path);
+    if !path.starts_with("/") {
+        println!("invalid request: path is not valid");
+        return false
+    }
+    //  Todo let path_checker = Regex::new(r"^(?=.*a).*$").unwrap();
+    true
+}
+
+fn valid_version(version: &str) -> bool {
+    if version == "HTTP/1.1" {
+        return true
+    }
+
+    false
 }
