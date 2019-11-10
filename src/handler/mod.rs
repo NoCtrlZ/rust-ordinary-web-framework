@@ -10,6 +10,5 @@ pub fn validate_http(mut stream: TcpStream) {
     stream.read(&mut buffer).unwrap();
 
     parser::parse_request(&buffer);
-
 }
 
