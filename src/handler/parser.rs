@@ -31,9 +31,19 @@ fn parse_header(header: &str) {
 
 fn valid_request(request: &str) -> bool {
     let v: Vec<&str> = request.split(" ").collect();
+    valid_method(v[0]);
+    // valid_path(v[1]);
+    // valid_version(v[2]);
     if v[2] == "HTTP/1.1" {
         true
     } else {
         false
     }
+}
+
+fn valid_method(method: &str) -> bool {
+    match method.as_ref() {
+        "GET" | "POST" | "PUT" | "DELETE" | "TRACE" | "CONNECT" |"HEAD" | "OPTIONS" => return true,
+        _ => return false,
+    };
 }
