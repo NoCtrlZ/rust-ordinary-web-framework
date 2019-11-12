@@ -6,11 +6,12 @@ use std::fs;
 use std::env;
 
 mod handler;
+mod parser;
 
-fn get_dir() -> std::io::Result<PathBuf> {
-    let path = env::current_dir()?;
-    Ok(path)
-}
+// fn get_dir() -> std::io::Result<PathBuf> {
+//     let path = env::current_dir()?;
+//     Ok(path)
+// }
 
 fn instance_listen(port: &str) {
     let listener = TcpListener::bind(format!("localhost{}", port)).unwrap();
@@ -19,7 +20,7 @@ fn instance_listen(port: &str) {
 
         let stream = stream.unwrap();
 
-        handler::validate_http(stream);
+        parser::parse_request(stream);
     }
 }
 
