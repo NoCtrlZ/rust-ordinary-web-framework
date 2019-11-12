@@ -1,11 +1,5 @@
 use std::net::TcpListener;
-use std::io::prelude::*;
-use std::net::TcpStream;
-use std::path::PathBuf;
-use std::fs;
-use std::env;
 
-mod handler;
 mod parser;
 
 // fn get_dir() -> std::io::Result<PathBuf> {
