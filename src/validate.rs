@@ -28,10 +28,16 @@ pub fn parse_request(buffer: &[u8]) {
 fn parse_header(header: &str) {
     let components: Vec<&str> = header.split("\r\n").collect();
     println!("{:?}", components);
-    if valid_request(components[0]) {
-        let request: Vec<&str> = components[0].split(" ").collect();
-        println!("{:?}", request);
+    if !valid_request(components[0]) {
+        println!("this request is invalid");
     }
+    let request: Vec<&str> = components[0].split(" ").collect();
+    let mut header = Header {
+        method: "".to_string(),
+        path: "".to_string(),
+        host: "".to_string(),
+        content_type: "".to_string(),
+    };
 }
 
 fn valid_request(request: &str) -> bool {
