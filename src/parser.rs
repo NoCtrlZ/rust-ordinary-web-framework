@@ -62,26 +62,31 @@ fn create_header(head: String) -> (Prefix, Header) {
     (prefix, header)
 }
 
-fn set_header(header: Vec<&str>) -> (Prefix, Header) {
-        // if n == 0 {
-        //     println!(header[n])
-        // }
-        let prefix = Prefix {
-            method: "hi".to_string(),
-            url: "hi".to_string(),
-            proto: "hi".to_string(),
-        };
-
-        let mut map = Header {
+fn set_header(headers: Vec<&str>) -> (Prefix, Header) {
+        let mut header = Header {
             header: HashMap::new(),
         };
+        let v: Vec<&str> = headers[0].split(" ").collect();
+        let prefix = Prefix {
+            method: v[0].to_string(),
+            url: v[1].to_string(),
+            proto: v[2].to_string(),
+        };
+        println!("1:{}", headers[0]);
+        println!("2:{}", headers[1]);
+        println!("3:{}", headers[2]);
 
-        map.header.insert(
+        for n in 1..headers.len() {
+            println!("{}", headers[n]);
+        };
+        println!("{}", prefix.method);
+
+        header.header.insert(
             "Adventures of Huckleberry Finn".to_string(),
             vec!["My favorite book.".to_string(), "hello".to_string()],
         );
         println!("{:?}", prefix.method);
-        (prefix, map)
+        (prefix, header)
 }
 
 fn set_prefix(pre: String) -> Prefix {
