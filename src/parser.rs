@@ -18,9 +18,8 @@ pub struct Header {
     pub header: HashMap<String, Vec<String>>,
 }
 
-pub fn parse_request(stream: TcpStream) -> Request {
-    let trimed_request = trim_request(stream);
-    let request = arrange_request(trimed_request);
+pub fn parse_request(stream: String) -> Request {
+    let request = arrange_request(stream);
     // println!("{:?}", request.body);
     request
 }

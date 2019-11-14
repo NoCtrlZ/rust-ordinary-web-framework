@@ -11,16 +11,24 @@ pub fn instance_listen(port: &str, handler: HashMap<String, HashMap<String, fn()
     // println!("{:?}", handler);
 
     for stream in listener.incoming() {
+        let mut buffer = [0; 512];
 
+        println!("hello");
+        println!("{:?}", stream);
         let handler = handler.clone();
 
-        let request = parser::parse_request(stream.unwrap());
+        let mut stream = stream.unwrap();
+
+        stream.read(&mut buffer).unwrap();
+        let contents = String::from_utf8_lossy(&buffer[..]);
+        let contents_string = contents.trim_matches(char::from(0)).to_string();
+
+        let request = parser::parse_request(contents_string);
         // println!("{:?}", request.body);
         let response = response::response_for_request(request.prefix.method, request.prefix.url, handler);
         // println!("{:?}", response);
-        // let mut stream = stream.unwrap();
-
-        // stream.write(response.as_bytes()).unwrap();
-        // stream.flush().unwrap();
+        stream.write(response.as_bytes()).unwrap();
+        stream.flush().unwrap();
+        println!("{:?}", stream);
     }
 }
