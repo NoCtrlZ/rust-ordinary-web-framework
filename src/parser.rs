@@ -2,27 +2,27 @@ use std::net::TcpStream;
 use std::io::prelude::*;
 use std::collections::HashMap;
 
-struct Request {
-    prefix: Box<Prefix>,
-    header: Box<Header>,
-    body: String,
+pub struct Request {
+    pub prefix: Box<Prefix>,
+    pub header: Box<Header>,
+    pub body: String,
 }
 
-struct Prefix {
-    method: String,
-    url: String,
-    proto: String,
+pub struct Prefix {
+    pub method: String,
+    pub url: String,
+    pub proto: String,
 }
 
-struct Header {
-    header: HashMap<String, Vec<String>>,
+pub struct Header {
+    pub header: HashMap<String, Vec<String>>,
 }
 
-pub fn parse_request(stream: TcpStream) {
+pub fn parse_request(stream: TcpStream) -> Request {
     let trimed_request = trim_request(stream);
     let request = arrange_request(trimed_request);
-    println!("{:?}", request.body);
-    // println!("{:?}", request.method);
+    // println!("{:?}", request.body);
+    request
 }
 
 fn trim_request(mut stream: TcpStream) -> String {
@@ -32,7 +32,7 @@ fn trim_request(mut stream: TcpStream) -> String {
     request.trim_matches(char::from(0)).to_string()
 }
 
-fn arrange_request(mut request: String) -> Request {
+fn arrange_request(request: String) -> Request {
     // println!("request start");
     // println!("{}", request);
     // println!("request end");
@@ -49,7 +49,7 @@ fn arrange_request(mut request: String) -> Request {
     req
 }
 
-fn divide_request(mut request: String) -> (String, String) {
+fn divide_request(request: String) -> (String, String) {
     let v: Vec<&str> = request.split("\r\n\r\n").collect();
     (v[0].to_string(), v[1].to_string())
 }
@@ -75,7 +75,7 @@ fn set_header(headers: Vec<&str>) -> (Prefix, Header) {
         };
 
         for n in 1..headers.len() {
-            let mut v: Vec<&str> = headers[n].split(" ").collect();
+            let v: Vec<&str> = headers[n].split(" ").collect();
             let mut pre = v[0].to_string();
             pre.pop();
             // println!("{}", pre);

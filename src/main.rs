@@ -14,7 +14,8 @@ fn instance_listen(port: &str) {
 
         let stream = stream.unwrap();
 
-        parser::parse_request(stream);
+        let request = parser::parse_request(stream);
+        println!("{:?}", request.body);
     }
 }
 
