@@ -21,7 +21,7 @@ struct Header {
 pub fn parse_request(stream: TcpStream) {
     let trimed_request = trim_request(stream);
     let request = arrange_request(trimed_request);
-    println!("{:?}", request.prefix.method);
+    println!("{:?}", request.body);
     // println!("{:?}", request.method);
 }
 
@@ -44,7 +44,7 @@ fn arrange_request(mut request: String) -> Request {
     let req = Request {
         prefix: Box::new(prefix),
         header: Box::new(header),
-        body: "String".to_string(),
+        body: body,
     };
     req
 }
