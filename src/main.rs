@@ -14,21 +14,23 @@ fn index_action() {
     println!("hello world");
 }
 
-fn instance_listen(port: &str) {
+fn instance_listen(port: &str, handler: HashMap<String, HashMap<String, fn()>>) {
     let listener = TcpListener::bind(format!("localhost{}", port)).unwrap();
+    // println!("{:?}", handler);
 
     for stream in listener.incoming() {
 
+        let handler = handler.clone();
         let stream = stream.unwrap();
 
         let request = parser::parse_request(stream);
         println!("{:?}", request.body);
-        response::response_for_request(request.prefix.method, request.prefix.url);
+        response::response_for_request(request.prefix.method, request.prefix.url, handler);
     }
 }
 
 fn main() {
     let port = ":5000";
     let mut router = router::register_get("/", index_action);
-    instance_listen(port);
+    instance_listen(port, router.handler);
 }
