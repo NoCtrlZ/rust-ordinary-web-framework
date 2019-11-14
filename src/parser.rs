@@ -39,7 +39,7 @@ fn arrange_request(mut request: String) -> Request {
     let (prefix, header) = create_header(head);
     // println!("{:?}", prefix);
     // println!("{:?}", header);
-    println!("{:?}", header.header);
+    // println!("{:?}", header.header);
     let req = Request {
         prefix: Box::new(prefix),
         header: Box::new(header),
@@ -72,29 +72,35 @@ fn set_header(headers: Vec<&str>) -> (Prefix, Header) {
             url: v[1].to_string(),
             proto: v[2].to_string(),
         };
-        println!("1:{}", headers[0]);
-        println!("2:{}", headers[1]);
-        println!("3:{}", headers[2]);
 
         for n in 1..headers.len() {
-            println!("{}", headers[n]);
+            let mut v: Vec<&str> = headers[n].split(" ").collect();
+            let mut pre = v[0].to_string();
+            pre.pop();
+            println!("{}", pre);
+            println!("{}", v[1]);
+            header.header.insert(
+                pre,
+                vec![v[1].to_string()],
+            );
+            // println!("header -> {}, times -> {}", headers[n], n);
         };
-        println!("{}", prefix.method);
+        // println!("{}", prefix.method);
 
-        header.header.insert(
-            "Adventures of Huckleberry Finn".to_string(),
-            vec!["My favorite book.".to_string(), "hello".to_string()],
-        );
-        println!("{:?}", prefix.method);
+        // header.header.insert(
+        //     "Adventures of Huckleberry Finn".to_string(),
+        //     vec!["My favorite book.".to_string(), "hello".to_string()],
+        // );
+        println!("{:?}", header.header);
         (prefix, header)
 }
 
-fn set_prefix(pre: String) -> Prefix {
-    let v: Vec<&str> = pre.split(" ").collect();
-    let prefix = Prefix {
-        method: v[0].to_string(),
-        url: v[1].to_string(),
-        proto: v[2].to_string(),
-    };
-    prefix
-}
+// fn set_prefix(pre: String) -> Prefix {
+//     let v: Vec<&str> = pre.split(" ").collect();
+//     let prefix = Prefix {
+//         method: v[0].to_string(),
+//         url: v[1].to_string(),
+//         proto: v[2].to_string(),
+//     };
+//     prefix
+// }
