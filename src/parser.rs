@@ -20,7 +20,6 @@ pub struct Header {
 
 pub fn parse_request(stream: String) -> Request {
     let request = arrange_request(stream);
-    // println!("{:?}", request.body);
     request
 }
 
@@ -32,14 +31,8 @@ fn trim_request(mut stream: TcpStream) -> String {
 }
 
 fn arrange_request(request: String) -> Request {
-    // println!("request start");
-    // println!("{}", request);
-    // println!("request end");
     let (head, body) = divide_request(request);
     let (prefix, header) = create_header(head);
-    // println!("{:?}", prefix);
-    // println!("{:?}", header);
-    // println!("{:?}", header.header);
     let req = Request {
         prefix: Box::new(prefix),
         header: Box::new(header),
@@ -56,8 +49,6 @@ fn divide_request(request: String) -> (String, String) {
 fn create_header(head: String) -> (Prefix, Header) {
     let pre: Vec<&str> = head.split("\r\n").collect();
     let (prefix, header) = set_header(pre);
-    // let prefix = set_prefix(pre[0].to_string());
-    // let header = set_header(pre[1].to_string());
 
     (prefix, header)
 }
@@ -77,14 +68,10 @@ fn set_header(headers: Vec<&str>) -> (Prefix, Header) {
             let v: Vec<&str> = headers[n].split(" ").collect();
             let mut pre = v[0].to_string();
             pre.pop();
-            // println!("{}", pre);
-            // println!("{}", v[1]);
             header.header.insert(
                 pre,
                 vec![v[1].to_string()],
             );
         };
-        // println!("{}", prefix.method);
-        // println!("{:?}", header.header);
         (prefix, header)
 }
