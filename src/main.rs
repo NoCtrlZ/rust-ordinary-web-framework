@@ -11,6 +11,6 @@ mod controller;
 
 fn main() {
     let port = ":5000";
-    let mut router = router::register_get("/", controller::greet);
+    let mut router = router::register_get("/", controller::index);
     server::instance_listen(port, router);
 }

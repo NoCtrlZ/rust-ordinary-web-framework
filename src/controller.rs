@@ -1,3 +1,3 @@
-pub fn greet() {
+pub fn index() {
     println!("hello world");
 }
