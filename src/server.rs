@@ -14,7 +14,7 @@ pub fn instance_listen(port: &str, handler: HashMap<String, HashMap<String, fn()
         let stream = stream.unwrap();
 
         let request = parser::parse_request(stream);
-        println!("{:?}", request.body);
+        // println!("{:?}", request.body);
         response::response_for_request(request.prefix.method, request.prefix.url, handler);
     }
 }
