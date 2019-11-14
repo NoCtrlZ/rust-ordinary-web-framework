@@ -3,6 +3,7 @@ use std::collections::HashMap;
 
 mod parser;
 mod router;
+mod response;
 
 // fn get_dir() -> std::io::Result<PathBuf> {
 //     let path = env::current_dir()?;
@@ -11,12 +12,6 @@ mod router;
 
 fn index_action() {
     println!("hello world");
-}
-
-pub fn register_get(path: &str, func: fn()) {
-    let mut route = HashMap::new();
-    route.entry("GET").or_insert_with(HashMap::new).insert(path, func);
-    println!("{:?}", route["GET"][path]);
 }
 
 fn instance_listen(port: &str) {
@@ -28,13 +23,12 @@ fn instance_listen(port: &str) {
 
         let request = parser::parse_request(stream);
         println!("{:?}", request.body);
-
-        // map.entry("GET").or_insert_with(HashMap::new).insert("/", index_action);
+        response::response_for_request(request.prefix.method, request.prefix.url);
     }
 }
 
 fn main() {
     let port = ":5000";
-    let mut route = register_get("/", index_action);
+    let mut router = router::register_get("/", index_action);
     instance_listen(port);
 }
