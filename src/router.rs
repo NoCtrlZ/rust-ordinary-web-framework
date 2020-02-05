@@ -1,4 +1,7 @@
-pub type Handler = fn(Request) -> Response;
+use crate::request;
+use crate::response;
+
+pub type Handler = fn(request::Request) -> response::Response;
 
 pub struct Route {
     pub path: String,
@@ -21,8 +24,13 @@ impl Router {
         let route = Route {
             method: String::from(method),
             path: String::from(path),
-            handler: Handler
+            handler: handler
         };
         self.routes.push(route)
+    }
+
+    pub fn get(&mut self, path: &str, handler: Handler) {
+        const method: &str = "GET";
+        self.register(method, path, handler);
     }
 }

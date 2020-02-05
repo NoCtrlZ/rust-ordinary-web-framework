@@ -1,11 +1,14 @@
-mod parser;
-mod router;
+mod request;
 mod response;
+mod router;
 mod server;
-mod controller;
 
 fn main() {
-    let port = ":5000";
-    let mut router = router::register_get("/", controller::index);
-    server::instance_listen(port, router);
+    let mut router = router::Router::new();
+    // router.get("/", index_handler);
+    server::Server::new(router).start("127.0.0.1:5000")
 }
+
+// fn index_handler(req: request::Request) -> response::Response {
+//     println!("{:?}", req);
+// }

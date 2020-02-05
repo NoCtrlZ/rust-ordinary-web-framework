@@ -1,30 +1,15 @@
 use std::collections::HashMap;
-use std::path::PathBuf;
-use std::env;
-use std::fs;
 
-pub fn response_for_request(method: String, url: String, handler: HashMap<String, HashMap<String, fn()>>) -> String {
-    let func = handler.get(&method).and_then(|m| m.get(&url)).unwrap();
-    func();
-
-    response_content(url)
+pub mod prefix {
+    pub const PREFIX: &str = "HTTP/1.1 200 OK\r\n";
 }
 
-pub fn response_content(mut url: String) -> String {
-    let mut path = get_view_dir().unwrap();
-    url.pop();
-    if url != "".to_string() {
-        path.push(url);
-    } else {
-        path.push(r"index")
-    }
-    path.set_extension("ers");
-    let contents = fs::read_to_string(path).unwrap();
-    format!("HTTP/1.1 200 OK\r\n\r\n{}", contents)
+pub struct Header {
+    pub header: HashMap<String, String>
 }
 
-fn get_view_dir() -> std::io::Result<PathBuf> {
-    let mut path = env::current_dir()?;
-    path.push(r"templates");
-    Ok(path)
+pub struct Response {
+    prefix: String,
+    header: Vec<Header>,
+    body: String,
 }
