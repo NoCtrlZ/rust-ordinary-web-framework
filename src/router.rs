@@ -1,6 +1,11 @@
 use crate::request;
 use crate::response;
 
+pub mod Method {
+    pub const GET: &str = "GET";
+    pub const POST: &str = "POST";
+}
+
 pub type Handler = fn(request::Request) -> response::Response;
 
 pub struct Route {
@@ -30,7 +35,7 @@ impl Router {
     }
 
     pub fn get(&mut self, path: &str, handler: Handler) {
-        const method: &str = "GET";
+        const method: &str = Method::GET;
         self.register(method, path, handler);
     }
 }
