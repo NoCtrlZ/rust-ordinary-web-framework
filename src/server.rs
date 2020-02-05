@@ -25,10 +25,13 @@ impl Server {
 
     fn handle(&self, stream: &mut TcpStream) {
         let req = request::Request::parse(stream);
+        // println!("{:?}", &self.router.routes);
         // self.response(stream, self.handler)
+        println!("{:?}", req.body);
     }
 
-    // fn response(stream: &mut TcpStream, handler: Handler, req: Request) {
-
+    // fn response(&self, stream: &mut TcpStream, handler: router::Handler, req: request::Request) {
+    //     let response = (handler)(req);
+    //     response.write(stream);
     // }
 }

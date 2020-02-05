@@ -6,19 +6,24 @@ use std::net::TcpStream;
 use crate::router;
 
 pub struct Request {
-    method: String,
-    path: String,
-    header: HashMap<String, String>,
+    pub method: String,
+    pub path: String,
+    pub header: HashMap<String, String>,
+    pub body: String,
 }
 
 impl Request {
-    pub fn parse(stream: &mut TcpStream) {
+    pub fn parse(stream: &mut TcpStream) -> Request {
         let raw_data = convert(stream);
         let (prefix, header, body) = divide(&raw_data);
         let (method, path) = Request::parse_prefix(&prefix);
         let header = Request::parse_header(&header);
-        println!("{:?}", method);
-        println!("{:?}", header);
+        Request {
+            method: method,
+            path: path,
+            header: header,
+            body: body,
+        }
     }
 
     pub fn parse_prefix(prefix: &str) -> (String, String) {
