@@ -1,7 +1,7 @@
-use std::net::TcpListener;
 use std::collections::HashMap;
-use std::net::TcpStream;
 use std::io::prelude::*;
+use std::net::TcpListener;
+use std::net::TcpStream;
 
 use crate::request;
 use crate::response;
@@ -13,7 +13,7 @@ pub struct Server {
 
 impl Server {
     pub fn new(router: router::Router) -> Server {
-        Server{ router: router }
+        Server { router: router }
     }
 
     pub fn start(&self, addr: &str) {
@@ -25,13 +25,16 @@ impl Server {
 
     fn handle(&self, stream: &mut TcpStream) {
         let req = request::Request::parse(stream);
-        // println!("{:?}", &self.router.routes);
-        // self.response(stream, self.handler)
-        println!("{:?}", req.body);
+        println!("{:?}", self.router.routes[0].path);
+        for route in &self.router.routes {
+            if route.method == req.method && route.path == req.path {
+                self.response(stream, route.handler, req);
+            }
+        }
     }
 
-    // fn response(&self, stream: &mut TcpStream, handler: router::Handler, req: request::Request) {
-    //     let response = (handler)(req);
-    //     response.write(stream);
-    // }
+    fn response(&self, stream: &mut TcpStream, handler: router::Handler, req: request::Request) {
+        let response = (handler)(req);
+        response.write(stream);
+    }
 }

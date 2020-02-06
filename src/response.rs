@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::net::TcpStream;
 
 pub mod prefix {
     pub const PREFIX: &str = "HTTP/1.1 200 OK\r\n";
@@ -11,10 +12,10 @@ pub struct Response {
 }
 
 impl Response {
-    // fn write(&self, stream: &mut TcpStream) -> {
-    //     stream.write(response.as_bytes()).unwrap();
-    //     stream.flush().unwrap();
-    // }
+    pub fn write(&self, stream: &mut TcpStream) {
+        let response = &self.body;
+        println!("{:?}", response);
+    }
 
     // fn compile(&self) -> String {
     //     let prefix = prefix::PREFIX;

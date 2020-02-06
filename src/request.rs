@@ -1,6 +1,6 @@
 use std::collections::HashMap;
-use std::io::BufReader;
 use std::io::prelude::*;
+use std::io::BufReader;
 use std::net::TcpStream;
 
 use crate::router;
@@ -50,10 +50,7 @@ impl Request {
             Some(e) => e,
             None => "/",
         };
-        headers.insert(
-            item.to_string(),
-            content.to_string(),
-        );
+        headers.insert(item.to_string(), content.to_string());
         headers
     }
 }
@@ -61,7 +58,9 @@ impl Request {
 fn convert(stream: &mut TcpStream) -> String {
     let mut buffer = [0; 512];
     stream.read(&mut buffer).unwrap();
-    String::from_utf8_lossy(&buffer[..]).trim_matches(char::from(0)).to_string()
+    String::from_utf8_lossy(&buffer[..])
+        .trim_matches(char::from(0))
+        .to_string()
 }
 
 fn divide(raw_data: &str) -> (String, String, String) {
