@@ -30,7 +30,7 @@ impl Request {
         let mut components = prefix.split_whitespace();
         let method = match components.nth(0) {
             Some(e) => e,
-            None => router::Method::GET,
+            None => router::method::GET,
         };
         let path = match components.nth(0) {
             Some(e) => e,
@@ -44,7 +44,7 @@ impl Request {
         let mut components = header.split_whitespace();
         let item = match components.nth(0) {
             Some(e) => e,
-            None => router::Method::GET,
+            None => router::method::GET,
         };
         let content = match components.nth(0) {
             Some(e) => e,

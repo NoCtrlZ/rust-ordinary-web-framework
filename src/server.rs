@@ -19,7 +19,7 @@ impl Server {
     pub fn start(&self, addr: &str) {
         let listener = TcpListener::bind(addr).unwrap();
         for stream in listener.incoming() {
-            self.handle(&mut stream.unwrap());
+            let response = self.handle(&mut stream.unwrap());
         }
     }
 
@@ -29,6 +29,7 @@ impl Server {
         for route in &self.router.routes {
             if route.method == req.method && route.path == req.path {
                 self.response(stream, route.handler, req);
+                break;
             }
         }
     }
