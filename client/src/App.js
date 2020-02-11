@@ -1,17 +1,15 @@
 import React from 'react';
+import Get from './components/Get'
 import './App.css';
 
-function App(props) {
-  const sendGet = e => {
-    console.log(e)
-  }
+function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
+        <h1>
           This is test UI to interact with Rust server
-        </p>
-        <button onClick={() => sendGet(props.arg)}>Send Get Request</button>
+        </h1>
+        <Get />
       </header>
     </div>
   );

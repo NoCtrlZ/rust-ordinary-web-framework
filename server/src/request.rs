@@ -64,9 +64,14 @@ fn convert(stream: &mut TcpStream) -> String {
 }
 
 fn divide(raw_data: &str) -> (String, String, String) {
-    let components: Vec<&str> = raw_data.split("\r\n\r\n").collect();
-    if components.len() != 2 {
+    let mut components: Vec<&str> = raw_data.split("\r\n\r\n").collect();
+    if components.len() > 2 {
+        println!("{:?}", components.len());
         panic!("Invalid request data");
+    }
+    if components.len() == 1 {
+        components.push("");
+        println!("{:?}", components.len());
     }
     let (prefix, header) = divide_none_body(components[0]);
     (prefix, header, components[1].to_string())
@@ -74,5 +79,6 @@ fn divide(raw_data: &str) -> (String, String, String) {
 
 fn divide_none_body(none_body: &str) -> (String, String) {
     let components: Vec<&str> = none_body.split("\r\n").collect();
+    println!("{:?}", components.len());
     (components[0].to_string(), components[1].to_string())
 }
